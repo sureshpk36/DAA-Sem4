@@ -2,9 +2,9 @@
 
 // Swap two elements in the array
 void swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+    int temp = *b;  // store the value of b in temp
+    *b = *a;        // assign the value of a to b
+    *a = temp;      // assign the stored value of b (temp) to a
 }
 
 // Partition the array using the last element as the pivot.
