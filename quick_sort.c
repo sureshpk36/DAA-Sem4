@@ -1,56 +1,51 @@
-#include <stdio.h>
+#include <iostream>
+using namespace std;
 
-// Swap two elements in the array
-void swap(int *a, int *b) {
-    int temp = *b;  // store the value of b in temp
-    *b = *a;        // assign the value of a to b
-    *a = temp;      // assign the stored value of b (temp) to a
-}
-
-// Partition the array using the last element as the pivot.
-// After partitioning, all elements less than the pivot are on its left,
-// and all elements greater than the pivot are on its right.
+// Function to partition the array
 int partition(int arr[], int low, int high) {
-    int pivot = arr[high];  // Choose the last element as the pivot
+    int pivot = arr[high];  // Choosing the last element as pivot
     int i = low - 1;        // Index of the smaller element
 
-    // Move elements that are less than the pivot to the left side
     for (int j = low; j < high; j++) {
-        if (arr[j] < pivot) {
-            i++;              // Increase index for smaller elements
-            swap(&arr[i], &arr[j]);  // Swap current element with the element at index i
+        if (arr[j] < pivot) {  // If current element is smaller than pivot
+            i++;
+            swap(arr[i], arr[j]);  // Swap elements
         }
     }
-    // Place the pivot in its correct position
-    swap(&arr[i + 1], &arr[high]);
-    return i + 1;  // Return the index of the pivot
+    swap(arr[i + 1], arr[high]);  // Move pivot to correct position
+    return (i + 1);
 }
 
-// Quick Sort function that recursively sorts the array.
+// QuickSort function
 void quickSort(int arr[], int low, int high) {
     if (low < high) {
-        // Partition the array and get the pivot index
-        int p = partition(arr, low, high);
-        
-        // Recursively sort elements before and after the pivot
-        quickSort(arr, low, p - 1);
-        quickSort(arr, p + 1, high);
+        int pi = partition(arr, low, high); // Get partition index
+
+        // Recursively sort the elements before and after partition
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
     }
 }
 
+// Function to print the array
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++)
+        cout << arr[i] << " ";
+    cout << endl;
+}
+
+// Main function
 int main() {
-    // Define an array to be sorted
-    int arr[] = {9, 4, 7, 3, 6, 2, 8, 1, 5};
-    int n = sizeof(arr) / sizeof(arr[0]);  // Calculate the number of elements
-    
-    // Call quickSort to sort the array
+    int arr[] = {10, 7, 8, 9, 1, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    cout << "Unsorted Array: ";
+    printArray(arr, n);
+
     quickSort(arr, 0, n - 1);
-    
-    // Print the sorted array
-    for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
-    }
-    printf("\n");
-    
+
+    cout << "Sorted Array: ";
+    printArray(arr, n);
+
     return 0;
 }
