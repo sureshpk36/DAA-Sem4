@@ -3,20 +3,17 @@ using namespace std;
 
 // Function to partition the array using the first element as the pivot
 int partition(int arr[], int low, int high) {
-    int pivot = arr[low];  // Choosing the first element as pivot
-    int i = low + 1;       // Index for the larger element
-    int j = high;          // Index for the smaller element
+    int pivot = arr[low];  
+    int j = high;
 
-    while (i <= j) {
-        while (i <= high && arr[i] <= pivot)  // Find element greater than pivot
-            i++;
-        while (arr[j] > pivot)  // Find element smaller than pivot
+    for (int i = low + 1; i <= j; i++) {
+        if (arr[i] > pivot) {  
+            swap(arr[i], arr[j]);
             j--;
-
-        if (i < j)
-            swap(arr[i], arr[j]);  // Swap out-of-place elements
+            i--;  // Recheck swapped element
+        }
     }
-    swap(arr[low], arr[j]);  // Swap pivot into correct position
+    swap(arr[low], arr[j]);  
     return j;
 }
 
