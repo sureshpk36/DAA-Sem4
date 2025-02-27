@@ -1,19 +1,23 @@
 #include <iostream>
 using namespace std;
 
-// Function to partition the array
+// Function to partition the array using the first element as the pivot
 int partition(int arr[], int low, int high) {
-    int pivot = arr[high];  // Choosing the last element as pivot
-    int i = low - 1;        // Index of the smaller element
+    int pivot = arr[low];  // Choosing the first element as pivot
+    int i = low + 1;       // Index for the larger element
+    int j = high;          // Index for the smaller element
 
-    for (int j = low; j < high; j++) {
-        if (arr[j] < pivot) {  // If current element is smaller than pivot
+    while (i <= j) {
+        while (i <= high && arr[i] <= pivot)  // Find element greater than pivot
             i++;
-            swap(arr[i], arr[j]);  // Swap elements
-        }
+        while (arr[j] > pivot)  // Find element smaller than pivot
+            j--;
+
+        if (i < j)
+            swap(arr[i], arr[j]);  // Swap out-of-place elements
     }
-    swap(arr[i + 1], arr[high]);  // Move pivot to correct position
-    return (i + 1);
+    swap(arr[low], arr[j]);  // Swap pivot into correct position
+    return j;
 }
 
 // QuickSort function
@@ -21,9 +25,8 @@ void quickSort(int arr[], int low, int high) {
     if (low < high) {
         int pi = partition(arr, low, high); // Get partition index
 
-        // Recursively sort the elements before and after partition
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+        quickSort(arr, low, pi - 1);  // Sort left partition
+        quickSort(arr, pi + 1, high); // Sort right partition
     }
 }
 
