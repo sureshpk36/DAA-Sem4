@@ -1,33 +1,48 @@
 #include <stdio.h>
 
+// Function to find maximum and minimum in array using divide and conquer
+void findMaxMin(int arr[], int low, int high, int *max, int *min) {
+    int mid, max1, min1, max2, min2;
+
+    // If only one element
+    if (low == high) {
+        *max = *min = arr[low];
+        return;
+    }
+
+    // If only two elements
+    if (high == low + 1) {
+        if (arr[low] > arr[high]) {
+            *max = arr[low];
+            *min = arr[high];
+        } else {
+            *max = arr[high];
+            *min = arr[low];
+        }
+        return;
+    }
+
+    // Divide the array
+    mid = (low + high) / 2;
+
+    // Find max and min in left half
+    findMaxMin(arr, low, mid, &max1, &min1);
+
+    // Find max and min in right half
+    findMaxMin(arr, mid + 1, high, &max2, &min2);
+
+    // Combine results
+    *max = (max1 > max2) ? max1 : max2;
+    *min = (min1 < min2) ? min1 : min2;
+}
+
 int main() {
-    int n, i;
-    int arr[100];
+    int arr[] = {10, 5, 20, 8, 25, 2};
+    int n = sizeof(arr) / sizeof(arr[0]);
     int max, min;
 
-    // Input size of the array
-    printf("Enter the number of elements in the array: ");
-    scanf("%d", &n);
+    findMaxMin(arr, 0, n - 1, &max, &min);
 
-    // Input elements in the array
-    printf("Enter %d elements:\n", n);
-    for(i = 0; i < n; i++) {
-        scanf("%d", &arr[i]);
-    }
-
-    // Initialize max and min with the first element
-    max = arr[0];
-    min = arr[0];
-
-    // Traverse the array to find max and min
-    for(i = 1; i < n; i++) {
-        if(arr[i] > max)
-            max = arr[i];
-        if(arr[i] < min)
-            min = arr[i];
-    }
-
-    // Output results
     printf("Maximum element: %d\n", max);
     printf("Minimum element: %d\n", min);
 
