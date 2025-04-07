@@ -1,61 +1,44 @@
-#include <iostream>
-#include <vector>
-using namespace std;
+#include <stdio.h>
 
-void merge(int arr[], int si, int mid, int ei) {
-    vector<int> temp;
-    int i = si, j = mid + 1;
-    
-    // Merge the two subarrays into temp
-    while (i <= mid && j <= ei) {
-        if (arr[i] < arr[j]) {
-            temp.push_back(arr[i]);
-            i++;
-        } else {
-            temp.push_back(arr[j]);
-            j++;
-        }
+void merge(int a[], int l, int m, int r) {
+    int i = l, j = m + 1, k = 0;
+    int temp[50];
+
+    while (i <= m && j <= r) {
+        if (a[i] < a[j])
+            temp[k++] = a[i++];
+        else
+            temp[k++] = a[j++];
     }
-    
-    // Copy any remaining elements from the left subarray
-    while (i <= mid) {
-        temp.push_back(arr[i]);
-        i++;
-    }
-    
-    // Copy any remaining elements from the right subarray
-    while (j <= ei) {
-        temp.push_back(arr[j]);
-        j++;
-    }
-    
-    // Copy back from temp to the original array
-    for (int k = si, x = 0; k <= ei; k++, x++) {
-        arr[k] = temp[x];
-    }
+
+    while (i <= m)
+        temp[k++] = a[i++];
+
+    while (j <= r)
+        temp[k++] = a[j++];
+
+    for (i = l, k = 0; i <= r; i++, k++)
+        a[i] = temp[k];
 }
 
-void mergeSort(int arr[], int si, int ei) {
-    if (si >= ei) {
-        return;
+void mergeSort(int a[], int l, int r) {
+    if (l < r) {
+        int m = (l + r) / 2;
+        mergeSort(a, l, m);
+        mergeSort(a, m + 1, r);
+        merge(a, l, m, r);
     }
-    int mid = si + (ei - si) / 2;
-    mergeSort(arr, si, mid);
-    mergeSort(arr, mid + 1, ei);
-    merge(arr, si, mid, ei);
 }
 
 int main() {
-    int arr[] = {5, 2, 8, 3, 9, 1};
-    int n = sizeof(arr) / sizeof(arr[0]);
-    
-    mergeSort(arr, 0, n - 1);
-    
-    // Print sorted array
-    for (int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
-    
+    int a[] = {5, 3, 8, 4, 2};
+    int n = 5;
+
+    mergeSort(a, 0, n - 1);
+
+    printf("Sorted array: ");
+    for (int i = 0; i < n; i++)
+        printf("%d ", a[i]);
+
     return 0;
 }
